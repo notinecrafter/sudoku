@@ -1,6 +1,6 @@
 # Python Sudoku Solver
 
-## Small python script (198 lines) that solves sudoku's pretty quickly.
+## Small python script (270 lines) that solves sudoku's pretty quickly.
 
 Usage:
 
