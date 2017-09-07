@@ -92,20 +92,18 @@ def rowtest(template, answer, rownum):
 								return False
 
 	return True
-			
-def findleast(sudoku, exclude = []):
-	lowest = 9
-	startrow = 0
+
+def ranking(sudoku):
+	ranking = {}
 	for rownum in range(0,9):
-		if not (rownum in exclude):
-			count = 0
-			for char in sudoku[rownum]:
-				if char == "x":
-					count += 1
-			if count < lowest:
-				startrow = rownum
-				lowest = count
-	return startrow
+		count = 0
+		for char in sudoku[rownum]:
+			if char == 'x':
+				count += 1
+		ranking[rownum] = count
+	order = sorted(ranking, key=ranking.__getitem__)
+	#print order
+	return order
 
 def findmissing(row):
 	nums = range(1,10)
@@ -159,7 +157,8 @@ for row in rows:
 	sudoku.append(array)
 
 #find row with most numbers filled in
-startrow = findleast(sudoku)
+order = ranking(sudoku)
+startrow = order[0]
 
 #find numbers missing from startrow
 missingnums = findmissing(sudoku[startrow])
@@ -175,7 +174,7 @@ for permutation in permutations:
 	if rowtest(template, inject(template[startrow], permutation), startrow):
 		template[startrow] = inject(template[startrow], permutation)
 
-		row2 = findleast(template, [startrow])
+		row2 = order[1]
 		missingnums2 = findmissing(template[row2])
 		#generate permutations for row 2
 		permutations2 = itertools.permutations(missingnums2)
@@ -185,7 +184,7 @@ for permutation in permutations:
 			if rowtest(template2, inject(template2[row2], permutation2), row2):
 				template2[row2] = inject(template2[row2], permutation2)
 
-				row3 = findleast(template2, [startrow, row2])
+				row3 = order[2]
 				missingnums3 = findmissing(template2[row3])
 				permutations3 = itertools.permutations(missingnums3)
 				for permutation3 in permutations3:
@@ -194,7 +193,7 @@ for permutation in permutations:
 					if rowtest(template3, inject(template3[row3], permutation3), row3):
 						template3[row3] = inject(template3[row3], permutation3)
 
-						row4 = findleast(template3, [startrow, row2, row3])
+						row4 = order[3]
 						missingnums4 = findmissing(template3[row4])
 						permutations4 = itertools.permutations(missingnums4)
 						for permutation4 in permutations4:
@@ -203,7 +202,7 @@ for permutation in permutations:
 							if rowtest(template4, inject(template4[row4], permutation4), row4):
 								template4[row4] = inject(template4[row4], permutation4)
 
-								row5 = findleast(template4, [startrow, row2, row3, row4])
+								row5 = order[4]
 								missingnums5 = findmissing(template4[row5])
 								permutations5 = itertools.permutations(missingnums5)
 								for permutation5 in permutations5:
@@ -212,7 +211,7 @@ for permutation in permutations:
 									if rowtest(template5, inject(template5[row5], permutation5), row5):
 										template5[row5] = inject(template5[row5], permutation5)
 										
-										row6 = findleast(template5, [startrow, row2, row3, row4, row5])
+										row6 = order[5]
 										missingnums6 = findmissing(template5[row6])
 										permutations6 = itertools.permutations(missingnums6)
 										for permutation6 in permutations6:
@@ -221,7 +220,7 @@ for permutation in permutations:
 											if rowtest(template6, inject(template6[row6], permutation6), row6):
 												template6[row6] = inject(template6[row6], permutation6)
 
-												row7 = findleast(template6, [startrow, row2, row3, row4, row5, row6])
+												row7 = order[6]
 												missingnums7 = findmissing(template6[row7])
 												permutations7 = itertools.permutations(missingnums7)
 												for permutation7 in permutations7:
@@ -230,7 +229,7 @@ for permutation in permutations:
 													if rowtest(template7, inject(template7[row7], permutation7), row7):
 														template7[row7] = inject(template7[row7], permutation7)
 														
-														row8 = findleast(template7, [startrow, row2, row3, row4, row5, row6, row7])
+														row8 = order[7]
 														missingnums8 = findmissing(template7[row8])
 														permutations8 = itertools.permutations(missingnums8)
 														for permutation8 in permutations8:
@@ -239,7 +238,7 @@ for permutation in permutations:
 															if rowtest(template8, inject(template8[row8], permutation8), row8):
 																template8[row8] = inject(template8[row8], permutation8)
 																
-																row9 = findleast(template8, [startrow, row2, row3, row4, row5, row6, row7, row8])
+																row9 = order[8]
 																missingnums9 = findmissing(template8[row9])
 																permutations9 = itertools.permutations(missingnums9)
 																for permutation9 in permutations9:
